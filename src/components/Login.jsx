@@ -35,7 +35,7 @@ const Login = ({ setAccessToken }) => {
 
   return (
     <div
-      className="fixed top-0 left-0 w-full h-full justify-center items-center z-10"
+      className="fixed top-0 left-0 w-full h-full justify-center items-center z-10 bg-[#333]"
       style={{ display: isModalOpen ? "flex" : "none" }}
     >
       <div className="bg-white p-8 rounded-xl text-center max-w-[400px] w-full">
