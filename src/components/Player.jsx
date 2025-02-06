@@ -6,8 +6,56 @@ import {
   FaPlay,
 } from "react-icons/fa6";
 
-const Player = () => {
+const Player = ({ player, deviceId, trackUri, accessToken }) => {
   const [isPlaying, setIsPlaying] = useState(false);
+
+  const playTrack = async () => {
+    try {
+      await fetch(
+        `https://api.spotify.com/v1/me/player/play?device_id=${deviceId}`,
+        {
+          method: "PUT",
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ context_uri: trackUri }),
+        }
+      );
+    } catch (error) {
+      console.error("Error playing track:", error);
+    }
+  };
+
+  const handlePlay = async () => {
+    if (!player) return;
+
+    if (!trackUri) {
+      alert("Please select a playlist to play.");
+      return;
+    }
+
+    const state = await player.getCurrentState();
+    if (!state) {
+      if (trackUri) {
+        await playTrack();
+        setIsPlaying(true);
+      }
+      return;
+    }
+
+    if (state.paused) {
+      if (state.context?.uri === trackUri) {
+        await player.resume();
+      } else {
+        await playTrack();
+      }
+      setIsPlaying(true);
+    } else {
+      await player.pause();
+      setIsPlaying(false);
+    }
+  };
 
   return (
     <>
@@ -37,7 +85,7 @@ const Player = () => {
           </button>
           <button
             className="py-[10px] px-5 mx-3 my-5 bg-[#d4af37] border-none rounded cursor-pointer text-[#333]"
-            onClick={() => setIsPlaying(!isPlaying)}
+            onClick={handlePlay}
           >
             {isPlaying ? <FaPause /> : <FaPlay />}
           </button>
