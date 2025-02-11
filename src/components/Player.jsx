@@ -56,6 +56,7 @@ const Player = ({ player, deviceId, trackUri, accessToken }) => {
     }
 
     const state = await player.getCurrentState();
+
     if (!state) {
       if (trackUri) {
         await playTrack();
@@ -100,6 +101,14 @@ const Player = ({ player, deviceId, trackUri, accessToken }) => {
       .catch((err) => console.error(err));
   }, [trackUri]);
 
+  // pause the player when trackUri changes
+  useEffect(() => {
+    if (!player) return;
+
+    player.pause();
+    setIsPlaying(false);
+  }, [trackUri]);
+
   return (
     <>
       <div className="relative w-[480px]">
@@ -129,7 +138,10 @@ const Player = ({ player, deviceId, trackUri, accessToken }) => {
           }}
         ></div>
         <div className="text-center mt-5">
-          <button className="py-[10px] px-5 mx-3 my-5 bg-[#d4af37] border-none rounded cursor-pointer text-[#333]">
+          <button
+            className="py-[10px] px-5 mx-3 my-5 bg-[#d4af37] border-none rounded cursor-pointer text-[#333]"
+            onClick={async () => await player.previousTrack()}
+          >
             <FaBackwardStep />
           </button>
           <button
@@ -138,7 +150,10 @@ const Player = ({ player, deviceId, trackUri, accessToken }) => {
           >
             {isPlaying ? <FaPause /> : <FaPlay />}
           </button>
-          <button className="py-[10px] px-5 mx-3 my-5 bg-[#d4af37] border-none rounded cursor-pointer text-[#333]">
+          <button
+            className="py-[10px] px-5 mx-3 my-5 bg-[#d4af37] border-none rounded cursor-pointer text-[#333]"
+            onClick={async () => await player.nextTrack()}
+          >
             <FaForwardStep />
           </button>
         </div>
