@@ -131,7 +131,7 @@ const Player = ({ player, deviceId, trackUri, accessToken }) => {
           </div>
         </div>
         <div
-          className="absolute top-16 right-12 w-36 h-[5px] bg-[#666] transition-transform duration-500"
+          className="absolute top-16 right-12 w-36 h-[5px] bg-[#EB5B00] transition-transform duration-500"
           style={{
             transformOrigin: "right center",
             transform: isPlaying ? "rotate(-55deg)" : "rotate(-90deg)",
@@ -139,19 +139,19 @@ const Player = ({ player, deviceId, trackUri, accessToken }) => {
         ></div>
         <div className="text-center mt-5">
           <button
-            className="py-[10px] px-5 mx-3 my-5 bg-[#d4af37] border-none rounded cursor-pointer text-[#333]"
+            className="py-[10px] px-5 mx-3 my-5 bg-[#d4af37] hover:bg-[#e5c047] border-none rounded cursor-pointer text-[#333]"
             onClick={async () => await player.previousTrack()}
           >
             <FaBackwardStep />
           </button>
           <button
-            className="py-[10px] px-5 mx-3 my-5 bg-[#d4af37] border-none rounded cursor-pointer text-[#333]"
+            className="py-[10px] px-5 mx-3 my-5 bg-[#d4af37] hover:bg-[#e5c047] border-none rounded cursor-pointer text-[#333]"
             onClick={handlePlay}
           >
             {isPlaying ? <FaPause /> : <FaPlay />}
           </button>
           <button
-            className="py-[10px] px-5 mx-3 my-5 bg-[#d4af37] border-none rounded cursor-pointer text-[#333]"
+            className="py-[10px] px-5 mx-3 my-5 bg-[#d4af37] hover:bg-[#e5c047] border-none rounded cursor-pointer text-[#333]"
             onClick={async () => await player.nextTrack()}
           >
             <FaForwardStep />

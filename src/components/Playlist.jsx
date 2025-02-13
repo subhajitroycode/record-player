@@ -35,8 +35,8 @@ const Playlist = ({ accessToken, setTrackUri }) => {
                 className={`flex-none w-32 p-4 rounded-lg shadow-md transition-transform hover:scale-105 cursor-pointer 
                   ${
                     selectedPlaylist === item.id
-                      ? "bg-blue-500 text-white"
-                      : "bg-white"
+                      ? "bg-[#D8C4B6]"
+                      : "bg-[#F5EFE7]"
                   }`}
                 onClick={() => {
                   setTrackUri(item.uri);

@@ -40,9 +40,12 @@ const Login = ({ setAccessToken }) => {
     >
       <div className="bg-white p-8 rounded-xl text-center max-w-[400px] w-full">
         <h2 className="text-2xl mb-4 font-bold">Welcome to Vinyl Player</h2>
-        <p className="mb-6 text-[#666]">
-          Connect your Spotify to start playing your favourite music with a
+        <p className="mb-4 text-[#666]">
+          Connect your Spotify* to start playing your favourite music with a
           vinyl experience.
+          <span className="inline-block font-semibold text-zinc-400 mt-4 text-sm">
+            *You need Spotify premium to play music
+          </span>
         </p>
         <button
           className="bg-[#1db954] text-white border-none px-8 py-4 rounded-full text-base font-bold cursor-pointer transition-background duration-300 hover:bg-[#1ed760]"
