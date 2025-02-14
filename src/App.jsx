@@ -31,7 +31,7 @@ function App() {
   return (
     <>
       <Login setAccessToken={setAccessToken} />
-      <div className="flex justify-evenly items-center h-screen bg-[#333]">
+      <div className="flex justify-evenly items-center flex-col xl:flex-row h-screen bg-[#333]">
         <Player
           player={player}
           deviceId={deviceId}

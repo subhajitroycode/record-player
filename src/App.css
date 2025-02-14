@@ -37,3 +37,68 @@
 .vinyl-animation.playing {
   animation-play-state: running;
 }
+
+@media (width <= 1280px) {
+  .player {
+    width: 520px;
+    height: 520px;
+  }
+
+  .player .disk {
+    width: 500px;
+    height: 500px;
+  }
+
+  .grooves {
+    width: 450px;
+    height: 450px;
+  }
+
+  .grooves::before {
+    width: 420px;
+    height: 420px;
+  }
+
+  .grooves::after {
+    width: 390px;
+    height: 390px;
+  }
+}
+
+@media (width <= 620px) {
+  .player {
+    width: 280px;
+    height: 280px;
+  }
+
+  .player .disk {
+    width: 260px;
+    height: 260px;
+  }
+
+  .grooves {
+    width: 210px;
+    height: 210px;
+  }
+
+  .grooves::before {
+    width: 180px;
+    height: 180px;
+  }
+
+  .grooves::after {
+    width: 150px;
+    height: 150px;
+  }
+
+  .disk .cover {
+    width: 6rem;
+    height: 6rem;
+  }
+
+  .needle {
+    width: 10rem;
+    right: -2rem;
+    top: 2rem;
+  }
+}

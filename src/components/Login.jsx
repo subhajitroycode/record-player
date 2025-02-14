@@ -38,12 +38,12 @@ const Login = ({ setAccessToken }) => {
       className="fixed top-0 left-0 w-full h-full justify-center items-center z-10 bg-[#333]"
       style={{ display: isModalOpen ? "flex" : "none" }}
     >
-      <div className="bg-white p-8 rounded-xl text-center max-w-[400px] w-full">
+      <div className="bg-white p-8 rounded-xl text-center w-11/12 sm:max-w-[400px] sm:w-full">
         <h2 className="text-2xl mb-4 font-bold">Welcome to Vinyl Player</h2>
         <p className="mb-4 text-[#666]">
           Connect your Spotify* to start playing your favourite music with a
           vinyl experience.
-          <span className="inline-block font-semibold text-zinc-400 mt-4 text-sm">
+          <span className="block font-semibold text-zinc-400 mt-4 text-sm">
             *You need Spotify premium to play music
           </span>
         </p>

@@ -111,10 +111,10 @@ const Player = ({ player, deviceId, trackUri, accessToken }) => {
 
   return (
     <>
-      <div className="relative w-[480px]">
-        <div className="relative w-80 h-80 bg-[#222] rounded-full my-0 mx-auto">
+      <div className="relative xl:w-[480px] w-auto">
+        <div className="relative w-80 h-80 bg-[#222] rounded-full my-0 mx-auto player">
           <div
-            className={`absolute top-[10px] left-[10px] w-[300px] h-[300px] rounded-full bg-gradient-to-tr from-[#111] to-[#444] vinyl-animation ${
+            className={`absolute top-[10px] left-[10px] w-[300px] h-[300px] rounded-full bg-gradient-to-tr from-[#111] to-[#444] vinyl-animation disk ${
               isPlaying && "playing"
             }`}
           >
@@ -123,15 +123,15 @@ const Player = ({ player, deviceId, trackUri, accessToken }) => {
               <img
                 src={imageSrc}
                 alt="Playlist cover photo"
-                className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-28 h-28 rounded-full object-cover"
+                className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-52 h-52 xl:w-28 xl:h-28 rounded-full object-cover cover"
               />
             ) : (
-              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-28 h-28 bg-[#d4af37] rounded-full flex justify-center items-center text-xs text-[#333]"></div>
+              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-52 h-52 xl:w-28 xl:h-28 bg-[#d4af37] rounded-full flex justify-center items-center text-xs text-[#333] cover"></div>
             )}
           </div>
         </div>
         <div
-          className="absolute top-16 right-12 w-36 h-[5px] bg-[#EB5B00] transition-transform duration-500"
+          className="absolute top-16 -right-12 xl:right-12 w-72 xl:w-36 h-[5px] bg-[#EB5B00] transition-transform duration-500 needle"
           style={{
             transformOrigin: "right center",
             transform: isPlaying ? "rotate(-55deg)" : "rotate(-90deg)",
