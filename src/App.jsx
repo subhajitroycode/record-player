@@ -37,7 +37,6 @@ function App() {
     const newPlayer = new window.Spotify.Player({
       name: "Record Player",
       getOAuthToken: (cb) => cb(accessToken),
-      volume: 0.5,
     });
 
     // Error handling
