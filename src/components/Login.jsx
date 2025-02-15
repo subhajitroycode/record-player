@@ -4,33 +4,109 @@ const Login = ({ setAccessToken }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const clientId = import.meta.env.VITE_CLIENT_ID;
   const redirectUri = import.meta.env.VITE_REDIRECT_URI;
-  const scopes =
+  const scope =
     "user-read-private user-read-email playlist-read-private streaming";
+  const authUrl = new URL("https://accounts.spotify.com/authorize");
 
-  const authenticate = () => {
-    const uri = `https://accounts.spotify.com/authorize?client_id=${clientId}&response_type=token&redirect_uri=${encodeURIComponent(
-      redirectUri
-    )}&scope=${encodeURIComponent(scopes)}`;
+  const generateRandomString = (length) => {
+    const possible =
+      "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+    const values = crypto.getRandomValues(new Uint8Array(length));
+    return values.reduce((acc, x) => acc + possible[x % possible.length], "");
+  };
 
-    window.location.href = uri;
-    setIsModalOpen(false);
+  const sha256 = async (plain) => {
+    const encoder = new TextEncoder();
+    const data = encoder.encode(plain);
+    return window.crypto.subtle.digest("SHA-256", data);
+  };
+
+  const base64encode = (input) => {
+    return btoa(String.fromCharCode(...new Uint8Array(input)))
+      .replace(/=/g, "")
+      .replace(/\+/g, "-")
+      .replace(/\//g, "_");
+  };
+
+  const authenticate = async () => {
+    const codeVerifier = generateRandomString(64);
+    const hashed = await sha256(codeVerifier);
+    const codeChallenge = base64encode(hashed);
+
+    window.localStorage.setItem("code_verifier", codeVerifier);
+
+    const params = {
+      response_type: "code",
+      client_id: clientId,
+      scope,
+      code_challenge_method: "S256",
+      code_challenge: codeChallenge,
+      redirect_uri: redirectUri,
+    };
+
+    authUrl.search = new URLSearchParams(params).toString();
+    window.location.href = authUrl.toString();
+  };
+
+  const getToken = async (code) => {
+    try {
+      const codeVerifier = localStorage.getItem("code_verifier");
+      const response = await fetch("https://accounts.spotify.com/api/token", {
+        method: "POST",
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        body: new URLSearchParams({
+          client_id: clientId,
+          grant_type: "authorization_code",
+          code,
+          redirect_uri: redirectUri,
+          code_verifier: codeVerifier,
+        }),
+      });
+
+      if (!response.ok) throw new Error("Failed to fetch token");
+
+      const data = await response.json();
+      if (!data.access_token) throw new Error("Invalid token response");
+
+      return data;
+    } catch (error) {
+      console.error("Token error:", error);
+      return null;
+    }
   };
 
   const handleAuth = () => {
-    const hash = window.location.hash.substring(1);
-    const params = new URLSearchParams(hash);
-    const accessToken = params.get("access_token");
+    const urlParams = new URLSearchParams(window.location.search);
+    let code = urlParams.get("code");
 
-    if (accessToken) {
-      setAccessToken(accessToken);
-      console.log("Logged in");
+    if (code) {
+      getToken(code)
+        .then((response) => {
+          localStorage.setItem("access_token", response.access_token);
+          const expiresIn = response.expires_in;
+          const expirationTime = Date.now() + expiresIn * 1000;
+          localStorage.setItem("token_expiration", expirationTime.toString());
+          setAccessToken(response.access_token);
+        })
+        .catch((err) => console.error(err));
     } else {
       setIsModalOpen(true);
     }
   };
 
   useEffect(() => {
-    handleAuth();
+    const storedToken = localStorage.getItem("access_token");
+    const tokenExpiration = localStorage.getItem("token_expiration");
+
+    if (
+      storedToken &&
+      tokenExpiration &&
+      Date.now() < parseInt(tokenExpiration)
+    ) {
+      setAccessToken(storedToken);
+    } else {
+      handleAuth();
+    }
   }, []);
 
   return (
